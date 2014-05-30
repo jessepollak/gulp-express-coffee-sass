@@ -14,4 +14,4 @@ app.set('view engine', 'html')
 app.get '/', (req, res) ->
     res.render 'index', layout: 'base'
 
-app.listen(3000)
+app.listen(process.env.PORT or 3000)
