@@ -5,10 +5,11 @@ prefix = require 'gulp-autoprefixer'
 spawn = require('child_process').spawn
 server = require('tiny-lr')()
 livereload = require('gulp-livereload')
+rename = require 'gulp-rename'
 
 
 gulp.task 'scss', ->
-  gulp.src './static/src/scss/**/*.scss'
+  gulp.src ['./static/src/scss/**/*.scss', '!static/src/scss/foundation/**/*']
   .pipe sass()
   .pipe prefix("> 1%")
   .pipe livereload(server)
@@ -16,8 +17,13 @@ gulp.task 'scss', ->
 
 gulp.task 'browserify', ->
   gulp.src './static/src/coffee/**/*.coffee'
-    .pipe browserify insertGlobals: true, debug: true
+    .pipe browserify
+      insertGlobals: true
+      debug: true
+      transform: ['coffeeify']
+      extensions: ['.coffee']
     .pipe livereload(server)
+    .pipe rename('app.js')
     .pipe gulp.dest('./static/dist/js')
 
 gulp.task 'server', ->
