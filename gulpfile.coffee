@@ -6,6 +6,8 @@ spawn = require('child_process').spawn
 server = require('tiny-lr')()
 livereload = require('gulp-livereload')
 rename = require 'gulp-rename'
+changed = require 'gulp-changed'
+imagemin = require 'gulp-imagemin'
 
 
 gulp.task 'scss', ->
@@ -26,6 +28,14 @@ gulp.task 'browserify', ->
     .pipe rename('app.js')
     .pipe gulp.dest('./static/dist/js')
 
+gulp.task 'images', ->
+  output = './static/dist/img'
+  gulp.src './static/src/img/**/*'
+    .pipe changed(output)
+    .pipe gulp.dest(output)
+    .pipe imagemin()
+    .pipe gulp.dest(output)
+
 gulp.task 'server', ->
   spawn 'nodemon', ['app.coffee'], stdio: 'inherit'
 
@@ -34,8 +44,9 @@ gulp.task 'watch', ->
     gulp.start 'server'
     gulp.watch './static/src/scss/**/*.scss', ['scss']
     gulp.watch './static/src/coffee/**/*.coffee', ['browserify']
+    gulp.watch './static/src/img/**/*', ['images']
 
 # Default task call every tasks created so far.
-gulp.task 'build', ['scss', 'browserify']
+gulp.task 'build', ['scss', 'browserify', 'images']
 gulp.task 'heroku:production', ['build']
 gulp.task 'default', ['build']
