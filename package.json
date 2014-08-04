@@ -19,5 +19,9 @@
     "nodemon": "~1.1.1",
     "coffeeify": "~0.6.0",
     "gulp-rename": "~1.2.0"
+  },
+  "devDependencies": {
+    "gulp-changed": "~0.4.1",
+    "gulp-imagemin": "~0.6.2"
   }
 }
