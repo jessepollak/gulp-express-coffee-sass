@@ -18,7 +18,7 @@ gulp.task 'scss', ->
   .pipe gulp.dest('./static/dist/css')
 
 gulp.task 'browserify', ->
-  gulp.src './static/src/coffee/**/*.coffee'
+  gulp.src './static/src/coffee/app.coffee'
     .pipe browserify
       insertGlobals: true
       debug: true
